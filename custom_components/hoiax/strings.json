@@ -1,0 +1,186 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "Log in to myUplink",
+        "description": "Høiax Connected water heaters are controlled through myUplink. Use the same e-mail and password as in the myUplink app ({myuplink_url}). The water heater must already be added to your myUplink account.",
+        "data": {
+          "username": "E-mail",
+          "password": "Password"
+        },
+        "data_description": {
+          "username": "The e-mail address you use to log in to the myUplink app.",
+          "password": "Your myUplink password. It is stored locally in Home Assistant and only sent to myUplink."
+        }
+      },
+      "reauth_confirm": {
+        "title": "Log in to myUplink again",
+        "description": "myUplink no longer accepts the stored password for {username}. Enter your current password.",
+        "data": {
+          "password": "Password"
+        }
+      },
+      "reconfigure": {
+        "title": "Change myUplink login",
+        "description": "Update the e-mail or password used for this account.",
+        "data": {
+          "username": "E-mail",
+          "password": "Password"
+        }
+      }
+    },
+    "error": {
+      "invalid_auth": "Wrong e-mail or password. Check that you can log in to the myUplink app with the same details.",
+      "cannot_connect": "Could not reach myUplink. Check your internet connection and try again.",
+      "no_devices": "Login worked, but no devices were found on this myUplink account. Add the water heater in the myUplink app first.",
+      "unknown": "Unexpected error, see the log for details."
+    },
+    "abort": {
+      "already_configured": "This myUplink account is already set up.",
+      "reauth_successful": "Login updated.",
+      "reconfigure_successful": "Login updated.",
+      "wrong_account": "You must use the same myUplink account. To use another account, add the integration again."
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "title": "Settings",
+        "data": {
+          "scan_interval": "Update interval"
+        },
+        "data_description": {
+          "scan_interval": "How often (in seconds) values are fetched from myUplink."
+        }
+      }
+    }
+  },
+  "entity": {
+    "water_heater": {
+      "water_heater": {
+        "state": {
+          "eco": "Eco",
+          "normal": "Normal",
+          "schedule": "Schedule",
+          "external": "External control",
+          "vacation": "Vacation",
+          "boost": "Boost",
+          "off": "Off"
+        }
+      }
+    },
+    "sensor": {
+      "water_temperature": {
+        "name": "Water temperature"
+      },
+      "power": {
+        "name": "Power"
+      },
+      "energy_total": {
+        "name": "Energy consumption"
+      },
+      "energy_stored": {
+        "name": "Stored energy"
+      },
+      "fill_level": {
+        "name": "Hot water level"
+      },
+      "current_program": {
+        "name": "Active program",
+        "state": {
+          "test": "Test",
+          "off": "Off",
+          "sleep": "Sleep",
+          "eco": "Eco",
+          "normal": "Normal",
+          "express": "Express",
+          "smart": "Smart",
+          "schedule": "Schedule",
+          "external": "External control",
+          "legionella": "Legionella",
+          "vacation": "Vacation",
+          "boost": "Boost"
+        }
+      },
+      "next_legionella": {
+        "name": "Next legionella program"
+      },
+      "last_legionella": {
+        "name": "Since last legionella program"
+      },
+      "tank_volume": {
+        "name": "Tank volume"
+      },
+      "element_1_runtime": {
+        "name": "Element 1 runtime"
+      },
+      "element_2_runtime": {
+        "name": "Element 2 runtime"
+      },
+      "total_runtime": {
+        "name": "Total runtime"
+      }
+    },
+    "binary_sensor": {
+      "element_1": {
+        "name": "Heating element 1"
+      },
+      "element_2": {
+        "name": "Heating element 2"
+      }
+    },
+    "select": {
+      "program": {
+        "name": "Program",
+        "state": {
+          "eco": "Eco",
+          "normal": "Normal",
+          "schedule": "Schedule",
+          "external": "External control",
+          "vacation": "Vacation",
+          "boost": "Boost"
+        }
+      },
+      "power_level": {
+        "name": "Max power"
+      }
+    },
+    "number": {
+      "boost_setpoint": {
+        "name": "Boost temperature"
+      },
+      "boost_duration": {
+        "name": "Boost duration"
+      },
+      "vacation_setpoint": {
+        "name": "Vacation temperature"
+      },
+      "vacation_duration": {
+        "name": "Vacation duration"
+      },
+      "hysteresis": {
+        "name": "Hysteresis"
+      },
+      "legionella_interval": {
+        "name": "Legionella interval"
+      },
+      "ambient_temperature": {
+        "name": "Ambient temperature"
+      },
+      "inlet_temperature": {
+        "name": "Inlet water temperature"
+      },
+      "max_water_flow": {
+        "name": "Max water flow"
+      }
+    }
+  },
+  "exceptions": {
+    "auth_failed": {
+      "message": "myUplink rejected the login. Log in again under Settings → Devices & services."
+    },
+    "write_failed": {
+      "message": "Could not send the change to the water heater: {error}"
+    }
+  }
+}

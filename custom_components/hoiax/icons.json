@@ -1,0 +1,34 @@
+{
+  "entity": {
+    "sensor": {
+      "fill_level": { "default": "mdi:water-percent" },
+      "energy_stored": { "default": "mdi:battery-heart-variant" },
+      "current_program": { "default": "mdi:playlist-play" },
+      "next_legionella": { "default": "mdi:bacteria-outline" },
+      "last_legionella": { "default": "mdi:bacteria-outline" },
+      "tank_volume": { "default": "mdi:water-boiler" },
+      "element_1_runtime": { "default": "mdi:timer-outline" },
+      "element_2_runtime": { "default": "mdi:timer-outline" },
+      "total_runtime": { "default": "mdi:timer-outline" }
+    },
+    "binary_sensor": {
+      "element_1": { "default": "mdi:heating-coil" },
+      "element_2": { "default": "mdi:heating-coil" }
+    },
+    "select": {
+      "program": { "default": "mdi:playlist-edit" },
+      "power_level": { "default": "mdi:flash" }
+    },
+    "number": {
+      "boost_setpoint": { "default": "mdi:rocket-launch" },
+      "boost_duration": { "default": "mdi:calendar-clock" },
+      "vacation_setpoint": { "default": "mdi:palm-tree" },
+      "vacation_duration": { "default": "mdi:calendar-clock" },
+      "hysteresis": { "default": "mdi:thermometer-lines" },
+      "legionella_interval": { "default": "mdi:bacteria-outline" },
+      "ambient_temperature": { "default": "mdi:home-thermometer" },
+      "inlet_temperature": { "default": "mdi:water-thermometer" },
+      "max_water_flow": { "default": "mdi:water-pump" }
+    }
+  }
+}

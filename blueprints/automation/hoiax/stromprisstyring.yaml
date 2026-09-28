@@ -1,0 +1,87 @@
+blueprint:
+  name: Høiax – varm vann når strømmen er billig
+  description: >
+    Slår av varmeelementene i Høiax Connected-berederen når strømprisen er over
+    en grense, og slår dem på igjen når prisen faller. Berederen varmes alltid
+    hvis vanntemperaturen faller under minimumstemperaturen, uansett pris.
+  domain: automation
+  source_url: https://github.com/jrgenl/hoiax-connected/blob/main/blueprints/automation/hoiax/stromprisstyring.yaml
+  input:
+    water_heater:
+      name: Bereder
+      selector:
+        entity:
+          filter:
+            - integration: hoiax
+              domain: water_heater
+    price_sensor:
+      name: Strømpris-sensor
+      description: F.eks. sensor fra Nord Pool eller Tibber (pris per kWh).
+      selector:
+        entity:
+          filter:
+            - domain: sensor
+    max_price:
+      name: Maks pris
+      description: Over denne prisen stoppes oppvarmingen.
+      default: 1.5
+      selector:
+        number:
+          min: 0
+          max: 20
+          step: 0.05
+          mode: box
+    min_temperature:
+      name: Minimumstemperatur
+      description: Under denne temperaturen varmes det uansett pris.
+      default: 45
+      selector:
+        number:
+          min: 30
+          max: 70
+          unit_of_measurement: °C
+
+mode: restart
+
+variables:
+  heater: !input water_heater
+  price_sensor: !input price_sensor
+  max_price: !input max_price
+  min_temperature: !input min_temperature
+
+trigger:
+  - platform: state
+    entity_id: !input price_sensor
+  - platform: time_pattern
+    minutes: "/15"
+  - platform: homeassistant
+    event: start
+
+condition:
+  - condition: template
+    value_template: "{{ states(price_sensor) | is_number }}"
+
+action:
+  - choose:
+      - conditions:
+          - condition: template
+            value_template: >
+              {{ states(price_sensor) | float > max_price | float
+                 and state_attr(heater, 'current_temperature') | float(0) >= min_temperature | float }}
+          - condition: template
+            value_template: "{{ not is_state(heater, 'off') }}"
+        sequence:
+          - service: water_heater.turn_off
+            target:
+              entity_id: !input water_heater
+      - conditions:
+          - condition: template
+            value_template: >
+              {{ states(price_sensor) | float <= max_price | float
+                 or state_attr(heater, 'current_temperature') | float(0) < min_temperature | float }}
+          - condition: template
+            value_template: "{{ is_state(heater, 'off') }}"
+        sequence:
+          - service: water_heater.turn_on
+            target:
+              entity_id: !input water_heater

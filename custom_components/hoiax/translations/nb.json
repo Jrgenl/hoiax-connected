@@ -1,0 +1,186 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "Logg inn på myUplink",
+        "description": "Høiax Connected-beredere styres via myUplink. Bruk samme e-post og passord som i myUplink-appen ({myuplink_url}). Berederen må allerede være lagt til på myUplink-kontoen din.",
+        "data": {
+          "username": "E-post",
+          "password": "Passord"
+        },
+        "data_description": {
+          "username": "E-postadressen du logger inn i myUplink-appen med.",
+          "password": "Passordet til myUplink. Det lagres lokalt i Home Assistant og sendes bare til myUplink."
+        }
+      },
+      "reauth_confirm": {
+        "title": "Logg inn på myUplink på nytt",
+        "description": "myUplink godtar ikke lenger det lagrede passordet for {username}. Skriv inn gjeldende passord.",
+        "data": {
+          "password": "Passord"
+        }
+      },
+      "reconfigure": {
+        "title": "Endre myUplink-innlogging",
+        "description": "Oppdater e-post eller passord for denne kontoen.",
+        "data": {
+          "username": "E-post",
+          "password": "Passord"
+        }
+      }
+    },
+    "error": {
+      "invalid_auth": "Feil e-post eller passord. Sjekk at du kan logge inn i myUplink-appen med de samme opplysningene.",
+      "cannot_connect": "Fikk ikke kontakt med myUplink. Sjekk internettforbindelsen og prøv igjen.",
+      "no_devices": "Innloggingen virket, men det finnes ingen enheter på denne myUplink-kontoen. Legg til berederen i myUplink-appen først.",
+      "unknown": "Uventet feil, se loggen for detaljer."
+    },
+    "abort": {
+      "already_configured": "Denne myUplink-kontoen er allerede satt opp.",
+      "reauth_successful": "Innloggingen er oppdatert.",
+      "reconfigure_successful": "Innloggingen er oppdatert.",
+      "wrong_account": "Du må bruke samme myUplink-konto. Legg til integrasjonen på nytt for å bruke en annen konto."
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "title": "Innstillinger",
+        "data": {
+          "scan_interval": "Oppdateringsintervall"
+        },
+        "data_description": {
+          "scan_interval": "Hvor ofte (i sekunder) verdier hentes fra myUplink."
+        }
+      }
+    }
+  },
+  "entity": {
+    "water_heater": {
+      "water_heater": {
+        "state": {
+          "eco": "Eco",
+          "normal": "Normal",
+          "schedule": "Tidsplan",
+          "external": "Ekstern styring",
+          "vacation": "Ferie",
+          "boost": "Boost",
+          "off": "Av"
+        }
+      }
+    },
+    "sensor": {
+      "water_temperature": {
+        "name": "Vanntemperatur"
+      },
+      "power": {
+        "name": "Effekt"
+      },
+      "energy_total": {
+        "name": "Energiforbruk"
+      },
+      "energy_stored": {
+        "name": "Lagret energi"
+      },
+      "fill_level": {
+        "name": "Varmtvannsnivå"
+      },
+      "current_program": {
+        "name": "Aktivt program",
+        "state": {
+          "test": "Test",
+          "off": "Av",
+          "sleep": "Hvile",
+          "eco": "Eco",
+          "normal": "Normal",
+          "express": "Ekspress",
+          "smart": "Smart",
+          "schedule": "Tidsplan",
+          "external": "Ekstern styring",
+          "legionella": "Legionella",
+          "vacation": "Ferie",
+          "boost": "Boost"
+        }
+      },
+      "next_legionella": {
+        "name": "Neste legionellaprogram"
+      },
+      "last_legionella": {
+        "name": "Siden forrige legionellaprogram"
+      },
+      "tank_volume": {
+        "name": "Tankvolum"
+      },
+      "element_1_runtime": {
+        "name": "Driftstid element 1"
+      },
+      "element_2_runtime": {
+        "name": "Driftstid element 2"
+      },
+      "total_runtime": {
+        "name": "Total driftstid"
+      }
+    },
+    "binary_sensor": {
+      "element_1": {
+        "name": "Varmeelement 1"
+      },
+      "element_2": {
+        "name": "Varmeelement 2"
+      }
+    },
+    "select": {
+      "program": {
+        "name": "Program",
+        "state": {
+          "eco": "Eco",
+          "normal": "Normal",
+          "schedule": "Tidsplan",
+          "external": "Ekstern styring",
+          "vacation": "Ferie",
+          "boost": "Boost"
+        }
+      },
+      "power_level": {
+        "name": "Maks effekt"
+      }
+    },
+    "number": {
+      "boost_setpoint": {
+        "name": "Boost-temperatur"
+      },
+      "boost_duration": {
+        "name": "Boost-varighet"
+      },
+      "vacation_setpoint": {
+        "name": "Ferietemperatur"
+      },
+      "vacation_duration": {
+        "name": "Ferievarighet"
+      },
+      "hysteresis": {
+        "name": "Hysterese"
+      },
+      "legionella_interval": {
+        "name": "Legionellaintervall"
+      },
+      "ambient_temperature": {
+        "name": "Romtemperatur"
+      },
+      "inlet_temperature": {
+        "name": "Innløpsvanntemperatur"
+      },
+      "max_water_flow": {
+        "name": "Maks vannstrøm"
+      }
+    }
+  },
+  "exceptions": {
+    "auth_failed": {
+      "message": "myUplink avviste innloggingen. Logg inn på nytt under Innstillinger → Enheter og tjenester."
+    },
+    "write_failed": {
+      "message": "Kunne ikke sende endringen til berederen: {error}"
+    }
+  }
+}
