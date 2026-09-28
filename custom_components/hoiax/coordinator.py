@@ -59,17 +59,25 @@ class HoiaxCoordinator(DataUpdateCoordinator[dict[str, HoiaxDevice]]):
         self._devices = {device.device_id: device for device in devices}
 
     async def _async_update_data(self) -> dict[str, HoiaxDevice]:
-        try:
-            results = await asyncio.gather(
-                *(self.client.async_get_points(dev_id) for dev_id in self._devices)
-            )
-        except HoiaxAuthError as err:
-            raise ConfigEntryAuthFailed(str(err)) from err
-        except HoiaxError as err:
-            raise UpdateFailed(str(err)) from err
-
-        for device, points in zip(self._devices.values(), results, strict=True):
-            device.points = points
+        results = await asyncio.gather(
+            *(self.client.async_get_points(dev_id) for dev_id in self._devices),
+            return_exceptions=True,
+        )
+        errors: list[BaseException] = []
+        for device, result in zip(self._devices.values(), results, strict=True):
+            if isinstance(result, HoiaxAuthError):
+                raise ConfigEntryAuthFailed(str(result)) from result
+            if isinstance(result, BaseException):
+                # One offline tank should not make the others unavailable.
+                _LOGGER.debug("Could not update %s: %s", device.device_id, result)
+                if not isinstance(result, HoiaxError):
+                    raise result
+                errors.append(result)
+                device.points = {}
+                continue
+            device.points = result
+        if errors and len(errors) == len(self._devices):
+            raise UpdateFailed(str(errors[0]))
         return dict(self._devices)
 
     async def async_write(self, device_id: str, values: dict[str, Any]) -> None:
