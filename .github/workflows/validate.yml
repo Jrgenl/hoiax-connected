@@ -20,7 +20,8 @@ jobs:
       - uses: hacs/action@main
         with:
           category: integration
-          ignore: brands
+          # description/topics only matter for the default HACS store listing
+          ignore: brands description topics
 
   tests:
     runs-on: ubuntu-latest

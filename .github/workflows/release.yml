@@ -1,24 +1,36 @@
 name: Release
 
+# Creates a GitHub release (and tag) automatically whenever the version in
+# manifest.json is bumped on main. No manual tagging needed.
 on:
-  release:
-    types: [published]
+  push:
+    branches: [main]
+    paths:
+      - custom_components/hoiax/manifest.json
+  workflow_dispatch:
 
 permissions:
   contents: write
 
 jobs:
-  zip:
+  release:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Set version from tag
+      - name: Read version
+        id: version
+        run: echo "version=$(jq -r .version custom_components/hoiax/manifest.json)" >> "$GITHUB_OUTPUT"
+      - name: Create release if missing
+        env:
+          GH_TOKEN: ${{ github.token }}
+          VERSION: ${{ steps.version.outputs.version }}
         run: |
-          VERSION="${GITHUB_REF_NAME#v}"
-          jq --arg v "$VERSION" '.version = $v' custom_components/hoiax/manifest.json > m.json
-          mv m.json custom_components/hoiax/manifest.json
-      - name: Zip integration
-        run: cd custom_components/hoiax && zip -r ../../hoiax.zip .
-      - uses: softprops/action-gh-release@v2
-        with:
-          files: hoiax.zip
+          if gh release view "v$VERSION" >/dev/null 2>&1; then
+            echo "Release v$VERSION already exists"
+            exit 0
+          fi
+          (cd custom_components/hoiax && zip -r ../../hoiax.zip .)
+          gh release create "v$VERSION" hoiax.zip \
+            --target "$GITHUB_SHA" \
+            --title "v$VERSION" \
+            --generate-notes
